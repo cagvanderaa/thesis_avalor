@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- Define the path to the world file -->
+    <arg name="world_path" default="/home/cle/catkin_ws/src/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/worlds/empty.world"/>
+
+    <!-- Include the MAVROS node with SITL and Gazebo -->
+    <include file="$(find px4)/launch/mavros_posix_sitl.launch">
+        <!-- Pass the world file path to the included launch file -->
+        <arg name="world" value="$(arg world_path)" />
+    </include>
+
+    <!-- Our node to control the drone -->
+    <node pkg="offboard_py" type="offb_node.py" name="offb_node_py" required="true" output="screen" />
+</launch>
