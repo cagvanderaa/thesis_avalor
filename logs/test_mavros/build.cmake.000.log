@@ -19,8 +19,8 @@ Not searching for unused variables given on the command line.
 [36m--[0m Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3")
 [36m--[0m Using PYTHON_EXECUTABLE: /usr/bin/python3
 [36m--[0m Using Debian Python package layout
-[36m--[0m Found PY_em: /usr/lib/python3/dist-packages/em.py
-[36m--[0m Using empy: /usr/lib/python3/dist-packages/em.py
+[36m--[0m Found PY_em: /home/cle/.local/lib/python3.8/site-packages/em.py
+[36m--[0m Using empy: /home/cle/.local/lib/python3.8/site-packages/em.py
 [36m--[0m Using CATKIN_ENABLE_TESTING: ON
 [36m--[0m Call enable_testing()
 [36m--[0m Using CATKIN_TEST_RESULTS_DIR: /home/cle/catkin_ws/build/test_mavros/test_results

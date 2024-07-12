@@ -195,10 +195,10 @@ CMakeFiles/icarous.xml-v2.0.dir/clean:
 
 # All Build rule for target.
 CMakeFiles/common.xml-v2.0.dir/all: CMakeFiles/standard.xml-v2.0.dir/all
-CMakeFiles/common.xml-v2.0.dir/all: CMakeFiles/ASLUAV.xml-v2.0.dir/all
-CMakeFiles/common.xml-v2.0.dir/all: CMakeFiles/all.xml-v2.0.dir/all
 CMakeFiles/common.xml-v2.0.dir/all: CMakeFiles/paparazzi.xml-v2.0.dir/all
 CMakeFiles/common.xml-v2.0.dir/all: CMakeFiles/icarous.xml-v2.0.dir/all
+CMakeFiles/common.xml-v2.0.dir/all: CMakeFiles/ASLUAV.xml-v2.0.dir/all
+CMakeFiles/common.xml-v2.0.dir/all: CMakeFiles/all.xml-v2.0.dir/all
 CMakeFiles/common.xml-v2.0.dir/all: CMakeFiles/autoquad.xml-v2.0.dir/all
 CMakeFiles/common.xml-v2.0.dir/all: CMakeFiles/ardupilotmega.xml-v2.0.dir/all
 CMakeFiles/common.xml-v2.0.dir/all: CMakeFiles/ualberta.xml-v2.0.dir/all

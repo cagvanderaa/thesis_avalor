@@ -4,6 +4,7 @@ import rospy
 from geometry_msgs.msg import PoseStamped
 from mavros_msgs.msg import State
 from mavros_msgs.srv import CommandBool, CommandBoolRequest, SetMode, SetModeRequest
+import numpy as np
 
 current_state = State()
 current_pose = PoseStamped()
@@ -37,16 +38,15 @@ if __name__ == "__main__":
     # Setpoint publishing MUST be faster than 2Hz
     rate = rospy.Rate(20)
 
-
     # Wait for Flight Controller connection
     while not rospy.is_shutdown() and not current_state.connected:
         rate.sleep()
 
     pose = PoseStamped()
 
-    pose.pose.position.x = 1  # Different starting position for target
+    pose.pose.position.x = 0  # Starting position
     pose.pose.position.y = 0
-    pose.pose.position.z = 2
+    pose.pose.position.z = 2  # Hover altitude
 
     # Send a few setpoints before starting
     for i in range(100):
@@ -64,6 +64,11 @@ if __name__ == "__main__":
 
     last_req = rospy.Time.now()
 
+    A = 3  # Amplitude of x
+    B = 6  # Amplitude of y
+    z_constant = 2  # Constant altitude
+    t = 0  # Initial time parameter
+
     while not rospy.is_shutdown():
         if current_state.mode != "OFFBOARD" and (rospy.Time.now() - last_req) > rospy.Duration(5.0):
             if set_mode_client.call(offb_set_mode).mode_sent:
@@ -77,7 +82,15 @@ if __name__ == "__main__":
 
                 last_req = rospy.Time.now()
 
+        # Update the time parameter
+        t += 0.005
+
+        # Calculate the new position for the 8-shaped path
+        pose.pose.position.x = A * np.sin(t)
+        pose.pose.position.y = B * np.sin(2 * t)
+        pose.pose.position.z = z_constant
+
         local_pos_pub.publish(pose)
 
-       
+        rate.sleep()
 

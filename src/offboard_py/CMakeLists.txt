@@ -9,6 +9,8 @@ project(offboard_py)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   rospy
+  std_msgs
+  tf
 )
 
 ## System dependencies are found with CMake's conventions
@@ -105,6 +107,8 @@ catkin_package(
 #  LIBRARIES offboard_py
 #  CATKIN_DEPENDS rospy
 #  DEPENDS system_lib
+
+CATKIN_DEPENDS rospy std_msgs tf
 )
 
 ###########

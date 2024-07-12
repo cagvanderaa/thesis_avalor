@@ -9,5 +9,6 @@
 # modified environment variables
 export CMAKE_PREFIX_PATH="/home/cle/catkin_ws/devel/.private/libmavconn:$CMAKE_PREFIX_PATH"
 export PWD='/home/cle/catkin_ws/build/libmavconn'
+export PYTHONPATH="/home/cle/catkin_ws/devel/lib/python3/dist-packages:$PYTHONPATH"
 export ROSLISP_PACKAGE_DIRECTORIES="/home/cle/catkin_ws/devel/.private/libmavconn/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
 export ROS_PACKAGE_PATH="/home/cle/catkin_ws/src/mavros/libmavconn:$ROS_PACKAGE_PATH"
