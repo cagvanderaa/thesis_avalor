@@ -53,14 +53,32 @@ if __name__ == "__main__":
     
     rate = rospy.Rate(20)
     projector = Projector()
+    image_center = (400, 400)
+    last_time = rospy.Time.now()
+    
+    #horizontal_pid = PIDController(Kp=10, Ki=0.1, Kd=0.05)
+    #vertical_pid = PIDController(Kp=2.0, Ki=0.1, Kd=0.05)
+    #distance_pid = PIDController(Kp=1.50, Ki=0.1, Kd=0.05)
+
+    #pid_control = PIDController()
+
 
     while not rospy.is_shutdown() and not current_state.connected:
         rate.sleep()
 
+    
+    orientation_list = tf.transformations.quaternion_from_euler(0, 0, 0.5* np.pi)
+
+    
     pose = PoseStamped()
     pose.pose.position.x = 0  # Different starting position for target
     pose.pose.position.y = 0
     pose.pose.position.z = 2
+
+    pose.pose.orientation.w = orientation_list[0]
+    pose.pose.orientation.x = orientation_list[1]
+    pose.pose.orientation.y = orientation_list[2]
+    pose.pose.orientation.z = orientation_list[3]
 
     # Send a few setpoints before starting
     for i in range(100):
@@ -118,7 +136,19 @@ if __name__ == "__main__":
 
         if uv is not None and distance is not None:
             rospy.loginfo(f"***** In Frame *****")
-            rospy.loginfo("Image: u: {}, v: {}".format(uv[0], uv[1]))
-
+            horizontal_error, vertical_error = projector.calculate_pixel_error(uv, image_center)
+            rospy.loginfo("Horizontal error: {}, Vertical error: {}".format(horizontal_error, vertical_error))
+            
+            current_time = rospy.Time.now()
+            dt = (current_time - last_time).to_sec()
+            last_time = current_time
+            
+            #delta_yaw = - horizontal_pid.update(horizontal_error / 400, dt)
+            #delta_h = vertical_pid.update(vertical_error / 400, dt)
+            #delta_r_forward = distance_pid.update(distance, dt)
+            #rospy.loginfo("Control Commands: delta_r_forward: {}, delta_h: {}, delta_yaw: {}".format(delta_r_forward, delta_h,delta_yaw))
+            
+            
+	    
         rate.sleep()
 

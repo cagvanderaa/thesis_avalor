@@ -64,8 +64,8 @@ if __name__ == "__main__":
 
     last_req = rospy.Time.now()
 
-    A = 3  # Amplitude of x
-    B = 6  # Amplitude of y
+    A = 6  # Amplitude of x
+    B = 1  # Amplitude of y
     z_constant = 2  # Constant altitude
     t = 0  # Initial time parameter
 

@@ -60,4 +60,8 @@ class Projector:
             return P_image[:2], np.linalg.norm(P_translated)
         else:
             return None, None
-
+            
+    def calculate_pixel_error(self, uv, image_center):
+        horizontal_error = uv[0] - image_center[0]
+        vertical_error = uv[1] - image_center[1]
+        return horizontal_error, vertical_error
