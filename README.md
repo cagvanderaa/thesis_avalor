@@ -25,7 +25,14 @@ Step 2: Install px4
 
 Install PX4 without the simulator toolchain:
 
-Download PX4 Source Code:
+Install git if you had not done so: 
+
+sh
+sudo apt update
+sudo apt upgrade
+sudo apt install git
+
+Download PX4 Source Code: 
 
 sh
 git clone https://github.com/PX4/PX4-Autopilot.git --recursive
@@ -113,6 +120,19 @@ Build source
 sh
 catkin build
 Make sure that you use setup.bash or setup.zsh from workspace.
+
+
+Before able to build it. multiple errors may occure. This is how I solved mine. 
+
+
+error 1: 
+error: ‘struct mavlink::common::msg::GPS2_RAW’ has no member named ‘hdg_acc’
+  111 |   ros_msg->hdg_acc           = mav_msg.hdg_acc;
+
+solution: open the file and comment out the lines that cause the error
+
+
+
 
 sh
 #Needed or rosrun can't find nodes from this workspace.
