@@ -135,4 +135,28 @@ error: ‘struct mavlink::common::msg::GPS2_RAW’ has no member named ‘hdg_ac
 solution: open the file and comment out the lines that cause the error
 
 
+If your launch files don't visualize drones, ensure your .bashrc includes the following lines:
+
+sh
+Code kopiëren
+# Source ROS setup
+source /opt/ros/noetic/setup.bash
+
+# Source PX4 Gazebo setup
+source /home/cle/catkin_ws/src/PX4-Autopilot/Tools/simulation/gazebo-classic/setup_gazebo.bash ~/PX4-Autopilot ~/PX4-Autopilot/build/px4_sitl_default
+
+# Set ROS package path
+export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/PX4-Autopilot
+export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic
+
+# Set Gazebo paths
+export GAZEBO_PLUGIN_PATH=$GAZEBO_PLUGIN_PATH:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins
+export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/cle/catkin_ws/src/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic
+After editing your .bashrc, source it to apply the changes:
+
+sh
+Code kopiëren
+source ~/.bashrc
+
+
 
