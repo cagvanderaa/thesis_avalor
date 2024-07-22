@@ -48,6 +48,9 @@ You may need to install the following additional dependencies:
 sh
 sudo apt-get install protobuf-compiler libeigen3-dev libopencv-dev -y
 
+sh
+make px4_sitl gazebo-classic
+
 Step 3 download ROS Noetic: 
 
 follow instruction below: 
@@ -132,9 +135,4 @@ error: ‘struct mavlink::common::msg::GPS2_RAW’ has no member named ‘hdg_ac
 solution: open the file and comment out the lines that cause the error
 
 
-
-
-sh
-#Needed or rosrun can't find nodes from this workspace.
-source devel/setup.bash
 
