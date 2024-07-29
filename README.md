@@ -1,165 +1,168 @@
-# thesis_avalor
-quadcopter drone interception using PX4 Autopilot
+# Thesis_Avalor: Quadcopter Drone Interception Using PX4 Autopilot
 
+## Installation Guide
 
-Installation guide
+This guide consists of 4 steps to set up your environment:
 
-consists of 4 steps: 
-- install ubuntu
-- install px4
-- install ros
-- install mavros
-- install this repository
+1. **Install Ubuntu 20.04**
+2. **Install PX4**
+3. **Install ROS Noetic**
+4. **Install MAVROS**
 
-Step 1: install ubuntu 20.04 (skip to step 2 if already installed)
+### Step 1: Install Ubuntu 20.04
 
-Ubuntu 20.04 is the last version to support ROS1, which is needed to run Mavros. 
+Ubuntu 20.04 is the last version to support ROS1, which is required to run MAVROS.
 
-Download the right image on: 
-https://cdimage.ubuntu.com/releases/20.04.5/release/
+- Download the Ubuntu 20.04 image from: [Ubuntu Releases](https://cdimage.ubuntu.com/releases/20.04.5/release/)
+- Follow the installation instructions for your specific hardware: [Installation Guide](https://medium.com/@shubhjain10102003/install-linux-ubuntu-20-04-on-m1-m2-mac-silicon-de1992d5fa26)
 
-follow installation instruction from: 
-https://medium.com/@shubhjain10102003/install-linux-ubuntu-20-04-on-m1-m2-mac-silicon-de1992d5fa26
+### Step 2: Install PX4
 
-Step 2: Install px4
+**Install PX4 without the simulator toolchain:**
 
-Install PX4 without the simulator toolchain:
+1. Install Git if you haven't already:
 
-Install git if you had not done so: 
+    ```bash
+    sudo apt update
+    sudo apt upgrade
+    sudo apt install git
+    ```
 
-sh
-sudo apt update
-sudo apt upgrade
-sudo apt install git
+2. Clone the PX4 source code:
 
-Download PX4 Source Code: 
+    ```bash
+    git clone https://github.com/PX4/PX4-Autopilot.git --recursive
+    ```
 
-sh
-git clone https://github.com/PX4/PX4-Autopilot.git --recursive
-Run the ubuntu.sh the --no-sim-tools (and optionally --no-nuttx):
+3. Run the setup script without simulation tools and optionally without NuttX:
 
-sh
-bash ./PX4-Autopilot/Tools/setup/ubuntu.sh --no-sim-tools --no-nuttx
-Acknowledge any prompts as the script progress.
-Restart the computer on completion.
+    ```bash
+    bash ./PX4-Autopilot/Tools/setup/ubuntu.sh --no-sim-tools --no-nuttx
+    ```
 
-You may need to install the following additional dependencies:
+   Follow any prompts as the script progresses. Restart your computer upon completion.
 
-sh
-sudo apt-get install protobuf-compiler libeigen3-dev libopencv-dev -y
+4. Install additional dependencies:
 
-sh
-make px4_sitl gazebo-classic
+    ```bash
+    sudo apt-get install protobuf-compiler libeigen3-dev libopencv-dev -y
+    ```
 
-Step 3 download ROS Noetic: 
+5. Build PX4 with Gazebo Classic:
 
-follow instruction below: 
-https://wiki.ros.org/noetic/Installation/Ubuntu#Installation
+    ```bash
+    make px4_sitl gazebo-classic
+    ```
 
-step 4: Install mavros
+### Step 3: Download ROS Noetic
 
-Use apt-get for installation, where ${ROS_DISTRO} below should resolve to kinetic or noetic, depending on your version of ROS:
+Follow the installation instructions for ROS Noetic: [ROS Noetic Installation](https://wiki.ros.org/noetic/Installation/Ubuntu#Installation)
 
-sh
-sudo apt-get install ros-${ROS_DISTRO}-mavros ros-${ROS_DISTRO}-mavros-extras ros-${ROS_DISTRO}-mavros-msgs
-Then install GeographicLib datasets by running the install_geographiclib_datasets.sh script:
+### Step 4: Install MAVROS
 
-sh
-wget https://raw.githubusercontent.com/mavlink/mavros/master/mavros/scripts/install_geographiclib_datasets.sh
-sudo bash ./install_geographiclib_datasets.sh
-Source Installation
-This installation assumes you have a catkin workspace located at ~/catkin_ws If you don't create one with:
+1. Use `apt-get` to install MAVROS and its extras. Replace `${ROS_DISTRO}` with `noetic` (for ROS Noetic):
 
-sh
-mkdir -p ~/catkin_ws/src
-cd ~/catkin_ws
-catkin init
-wstool init src
-You will be using the ROS Python tools: wstool (for retrieving sources), rosinstall, and catkin_tools (building) for this installation. While they may have been installed during your installation of ROS you can also install them with:
+    ```bash
+    sudo apt-get install ros-${ROS_DISTRO}-mavros ros-${ROS_DISTRO}-mavros-extras ros-${ROS_DISTRO}-mavros-msgs
+    ```
 
-sh
-sudo apt-get install python-catkin-tools python-rosinstall-generator -y
-TIP
+2. Install GeographicLib datasets:
 
-While the package can be built using catkin_make the preferred method is using catkin_tools as it is a more versatile and "friendly" build tool.
+    ```bash
+    wget https://raw.githubusercontent.com/mavlink/mavros/master/mavros/scripts/install_geographiclib_datasets.sh
+    sudo bash ./install_geographiclib_datasets.sh
+    ```
 
-If this is your first time using wstool you will need to initialize your source space with:
+**Source Installation:**
 
-sh
-$ wstool init ~/catkin_ws/src
-Now you are ready to do the build:
+This installation assumes you have a catkin workspace located at `~/catkin_ws`. If not, create one:
 
-Install MAVLink:
+    ```bash
+    mkdir -p ~/catkin_ws/src
+    cd ~/catkin_ws
+    catkin init
+    wstool init src
+    ```
 
-sh
-# We use the Kinetic reference for all ROS distros as it's not distro-specific and up to date
-rosinstall_generator --rosdistro kinetic mavlink | tee /tmp/mavros.rosinstall
-Install MAVROS from source using either released or latest version:
+You will use the ROS Python tools: `wstool`, `rosinstall`, and `catkin_tools`. They may have been installed with ROS, but you can also install them:
 
-Released/stable
+    ```bash
+    sudo apt-get install python-catkin-tools python-rosinstall-generator -y
+    ```
 
-sh
-rosinstall_generator --upstream mavros | tee -a /tmp/mavros.rosinstall
-Latest source
+**Tip:** While you can use `catkin_make`, `catkin_tools` is the preferred method as it is more versatile.
 
-sh
-rosinstall_generator --upstream-development mavros | tee -a /tmp/mavros.rosinstall
-sh
-# For fetching all the dependencies into your catkin_ws,
-# just add '--deps' to the above scripts, E.g.:
-#   rosinstall_generator --upstream mavros --deps | tee -a /tmp/mavros.rosinstall
-Create workspace & deps
+Initialize your source space with `wstool`:
 
-sh
-wstool merge -t src /tmp/mavros.rosinstall
-wstool update -t src -j4
-rosdep install --from-paths src --ignore-src -y
-Install GeographicLib datasets:
+    ```bash
+    wstool init ~/catkin_ws/src
+    ```
 
-sh
-./src/mavros/mavros/scripts/install_geographiclib_datasets.sh
-Build source
+**Build MAVROS:**
 
-sh
-catkin build
-Make sure that you use setup.bash or setup.zsh from workspace.
+1. Install MAVLink:
 
+    ```bash
+    rosinstall_generator --rosdistro kinetic mavlink | tee /tmp/mavros.rosinstall
+    ```
 
-Before able to build it. multiple errors may occure. This is how I solved mine. 
+2. Install MAVROS from source (choose released/stable or latest source):
 
+   - Released/stable:
 
-error 1: 
-error: ‘struct mavlink::common::msg::GPS2_RAW’ has no member named ‘hdg_acc’
-  111 |   ros_msg->hdg_acc           = mav_msg.hdg_acc;
+      ```bash
+      rosinstall_generator --upstream mavros | tee -a /tmp/mavros.rosinstall
+      ```
 
-solution: open the file and comment out the lines that cause the error
+   - Latest source:
 
-error: Resource not found: px4 ROS path [0]=/opt/ros/noetic/share/ros
-If your launch files don't visualize drones, ensure your .bashrc includes the following lines:
+      ```bash
+      rosinstall_generator --upstream-development mavros | tee -a /tmp/mavros.rosinstall
+      ```
 
-source /opt/ros/noetic/setup.bash
+3. Fetch all dependencies:
 
+    ```bash
+    rosinstall_generator --upstream mavros --deps | tee -a /tmp/mavros.rosinstall
+    ```
 
-/home/cle/catkin_ws/src/PX4-Autopilot
+4. Create workspace & dependencies:
 
-source /home/cle/catkin_ws/src/PX4-Autopilot/Tools/simulation/gazebo-classic/setu>
-export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/home/cle/catkin_ws/src/PX4-Autopilot
-export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/home/cle/catkin_ws/src/PX4-Autopilot/T>
-export GAZEBO_PLUGIN_PATH=$GAZEBO_PLUGIN_PATH:/usr/lib/aarch64-linux-gnu/gazebo-1>
+    ```bash
+    wstool merge -t src /tmp/mavros.rosinstall
+    wstool update -t src -j4
+    rosdep install --from-paths src --ignore-src -y
+    ```
 
-export GAZEBO_MODEL_PATH=/usr/share/gazebo-11/models:${GAZEBO_MODEL_PATH}
+5. Build the workspace:
 
+    ```bash
+    ./src/mavros/mavros/scripts/install_geographiclib_datasets.sh
+    catkin build
+    ```
 
+6. Ensure your `.bashrc` includes:
 
-Code kopiëren
-source ~/.bashrc
+    ```bash
+    source /opt/ros/noetic/setup.bash
+    source /home/cle/catkin_ws/src/PX4-Autopilot/Tools/simulation/gazebo-classic/setup.bash
+    export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/home/cle/catkin_ws/src/PX4-Autopilot
+    export GAZEBO_PLUGIN_PATH=$GAZEBO_PLUGIN_PATH:/usr/lib/aarch64-linux-gnu/gazebo-11/plugins
+    export GAZEBO_MODEL_PATH=/usr/share/gazebo-11/models:${GAZEBO_MODEL_PATH}
+    ```
 
+   Source your updated `.bashrc`:
 
+    ```bash
+    source ~/.bashrc
+    ```
 
+**Common Issues:**
 
-solution: 
+- **Error:** `error: ‘struct mavlink::common::msg::GPS2_RAW’ has no member named ‘hdg_acc’`
+  - **Solution:** Open the file and comment out the lines that cause the error.
 
-sh
+- **Error:** `Resource not found: px4 ROS path [0]=/opt/ros/noetic/share/ros`
+  - **Solution:** Ensure your `.bashrc` includes the proper ROS and PX4 paths as described above.
 
-
-
+Feel free to reach out if you encounter any issues or need further assistance!
