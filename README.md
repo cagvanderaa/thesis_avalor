@@ -164,5 +164,10 @@ Initialize your source space with `wstool`:
 
 - **Error:** `Resource not found: px4 ROS path [0]=/opt/ros/noetic/share/ros`
   - **Solution:** Ensure your `.bashrc` includes the proper ROS and PX4 paths as described above.
+  - or provide the following command:
+
+    ```bash
+    export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/catkin_ws/src/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic
+    ```
 
 Feel free to reach out if you encounter any issues or need further assistance!
