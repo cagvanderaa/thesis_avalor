@@ -88,11 +88,12 @@ class VisualServoController:
         last_req = rospy.Time.now()
         yaw_angle = 0  # Initialize yaw angle
 
+
         while not rospy.is_shutdown():
-            if not self.pursuit_started:
-                rospy.loginfo("Waiting for target to depart")
-                self.rate.sleep()
-                continue
+            #if not self.pursuit_started:
+                #rospy.loginfo("Waiting for target to depart")
+            #    self.rate.sleep()
+                
 
             if self.current_state.mode != "OFFBOARD" and (rospy.Time.now() - last_req) > rospy.Duration(5.0):
                 if self.set_mode_client.call(offb_set_mode).mode_sent:
@@ -114,7 +115,7 @@ class VisualServoController:
             uv, distance = self.projector.project_point(position_uav1, angles, position_uav2)
 
             if uv is not None and distance is not None:
-                rospy.loginfo(f"***** In Frame *****")
+                #rospy.loginfo(f"***** In Frame *****")
                 horizontal_error, vertical_error = self.projector.calculate_pixel_error(uv, self.image_center)
 
                 current_time = rospy.Time.now()
@@ -142,14 +143,14 @@ class VisualServoController:
 
                 self.local_pos_pub.publish(pose)
 
-                rospy.loginfo("distance error: {}, delta_forward: {}".format(distance, delta_r_forward))
+                #rospy.loginfo("distance error: {}, delta_forward: {}".format(distance, delta_r_forward))
 
                 # Publish the horizontal error
                 self.error_pub.publish(horizontal_error)
                 self.distance_error_pub.publish(distance)
 
             else:
-                rospy.loginfo("No target detected. Hovering.")
+                #rospy.loginfo("No target detected. Hovering.")
 
                 # Update yaw angle for a slow 360-degree turn
 

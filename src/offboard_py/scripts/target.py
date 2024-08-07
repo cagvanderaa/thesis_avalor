@@ -5,7 +5,7 @@ from geometry_msgs.msg import PoseStamped
 from mavros_msgs.msg import State
 from mavros_msgs.srv import CommandBool, CommandBoolRequest, SetMode, SetModeRequest
 import numpy as np
-from std_msgs.msg import Empty as EmptyMsg
+from std_msgs.msg import Int32, Float32
 
 current_state = State()
 current_pose = PoseStamped()
@@ -17,7 +17,7 @@ def state_cb(msg):
 def pose_cb(msg):
     global current_pose
     current_pose = msg
-    rospy.loginfo("Current Position: x: {}, y: {}, z: {}".format(current_pose.pose.position.x, current_pose.pose.position.y, current_pose.pose.position.z))
+    #rospy.loginfo("Current Position: x: {}, y: {}, z: {}".format(current_pose.pose.position.x, current_pose.pose.position.y, current_pose.pose.position.z))
 
 if __name__ == "__main__":
     rospy.init_node("target_node")
@@ -29,7 +29,7 @@ if __name__ == "__main__":
     local_pos_sub = rospy.Subscriber(f"{namespace}mavros/local_position/pose", PoseStamped, callback=pose_cb)
 
     local_pos_pub = rospy.Publisher(f"{namespace}mavros/setpoint_position/local", PoseStamped, queue_size=10)
-    departure_pub = rospy.Publisher("/target_departure", EmptyMsg, queue_size=10)
+    speed_pub = rospy.Publisher("/target_speed", Float32, queue_size=10)
 
     rospy.wait_for_service(f"{namespace}mavros/cmd/arming")
     arming_client = rospy.ServiceProxy(f"{namespace}mavros/cmd/arming", CommandBool)
@@ -43,8 +43,8 @@ if __name__ == "__main__":
         rate.sleep()
 
     pose = PoseStamped()
-    pose.pose.position.x = 5
-    pose.pose.position.y = 4
+    pose.pose.position.x = 8
+    pose.pose.position.y = 5
     pose.pose.position.z = 2
 
     for i in range(100):
@@ -62,17 +62,16 @@ if __name__ == "__main__":
 
     last_req = rospy.Time.now()
 
-    A = 7
-    B = 3
+    A = 10
+    B = 5
     C = 1
     z_constant = 2
     t = 0
-    v = 4
+    v = 1  # Initial speed in m/s
+    cycle_count = 0
 
-    # Publish the departure signal
     rospy.sleep(5)
-    departure_pub.publish(EmptyMsg())
-    
+
     while not rospy.is_shutdown():
         if current_state.mode != "OFFBOARD" and (rospy.Time.now() - last_req) > rospy.Duration(5.0):
             if set_mode_client.call(offb_set_mode).mode_sent:
@@ -96,10 +95,22 @@ if __name__ == "__main__":
 
         t += dt
 
+        # Check if a full cycle (8 shape) is completed
+        if t >= 2 * np.pi:
+            t = 0
+            cycle_count += 1
+            rospy.loginfo(f"Cycle {cycle_count} completed at speed {v} m/s")
+            v += 0.5
+            rospy.loginfo(f"Increasing speed to {v} m/s")
+                
         pose.pose.position.x = x
         pose.pose.position.y = y
         pose.pose.position.z = z_constant
 
         local_pos_pub.publish(pose)
+
+        # Publish the speed
+        speed_pub.publish(v)
+        #rospy.loginfo(f"Speed published: {v} m/s")
 
         rate.sleep()
