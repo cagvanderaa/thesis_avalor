@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import signal
 import os
+import math
 
 class ErrorLogger:
     def __init__(self):
@@ -124,16 +125,16 @@ class ErrorLogger:
             distance_error_log = self.speed_logs[speed]['distance']
 
             # Calculate MSE and variance for the horizontal error
-            mse = np.mean(np.square(error_log))
-            variance = np.var(error_log)
+            rmse = math.sqrt(np.mean(np.square(error_log)))
+            std = np.std(error_log)
 
-            rospy.loginfo(f"MSE for speed {speed}: {mse}")
-            rospy.loginfo(f"Variance for speed {speed}: {variance}")
+            rospy.loginfo(f"RMSE for speed {speed}: {rmse}")
+            rospy.loginfo(f"Standard Deviation for speed {speed}: {std}")
 
             ax1 = ax
             ax1.set_xlabel('Time (s)')
             ax1.set_ylabel('Horizontal Error', color='tab:blue')
-            ax1.plot(time_log, error_log, label=f'Horizontal Error (MSE: {mse:.2f}, Var: {variance:.2f})', color='tab:blue')
+            ax1.plot(time_log, error_log, label=f'Horizontal Error (MSE: {rmse:.2f}, Var: {std:.2f})', color='tab:blue')
             ax1.tick_params(axis='y', labelcolor='tab:blue')
 
             ax2 = ax1.twinx()
