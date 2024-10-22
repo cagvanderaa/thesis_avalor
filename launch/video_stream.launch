@@ -1,0 +1,22 @@
+  GNU nano 4.8                          video_stream.launch                                    
+<launch>
+  <!-- Arguments -->
+  <arg name="video_stream_url" default="rtsp://192.168.144.25:8554/main.264" />
+  <arg name="camera_name" default="camera" />
+  <arg name="frame_id" default="camera_frame" />
+  <arg name="fps" default="30" />
+
+  <!-- Video Stream Node -->
+  <node pkg="video_stream_opencv" type="video_stream" name="video_stream_node" output="screen">
+    <param name="video_stream_provider" value="$(arg video_stream_url)" />
+    <param name="camera_name" value="$(arg camera_name)" />
+    <param name="frame_id" value="$(arg frame_id)" />
+    <param name="fps" value="$(arg fps)" />
+    <param name="buffer_queue_size" value="100" />
+  </node>
+
+  <!-- Image Resizer Node -->
+  <node pkg="offboard_py" type="image_resizer.py" name="image_resizer" output="screen" />
+
+</launch>
+

@@ -1,0 +1,40 @@
+pursuer:
+  vision:
+    virtual_plane: true        # Set to true to enable virtual plane
+    kalman_filter: true
+    IOU: 1                     # Set to 1 for perfect vision, 0.8 for realistic tracking
+    accuracy: 100
+    vertical_offset: 0
+    vision: False
+
+  control:
+    follow_distance: 3
+    intercept: False
+
+    pid_control_horizontal:
+      Kp: 2.5
+      Ki: 0
+      Kd: 0.7
+
+    pid_control_vertical:
+      Kp: 1.9
+      Ki: 0
+      Kd: 0.8
+
+    pid_control_distance:
+      Kp: 1.8
+      Ki: 0
+      Kd: 0.8
+
+target:
+  motion:
+    trajectory_type: "8"      # Options: "circle", "figure_eight", etc.
+    radius: 30                      # Radius for circular trajectory
+    vertical_amplitude: 0           # Amplitude for vertical oscillation
+    v: 4                            # Initial speed in m/s
+
+general:
+  experiment_duration: 3600          # Duration in seconds (e.g., 1 hour)
+  logging_enabled: true              # Enable or disable logging
+  environment: "urban"               # Description of the environment
+  save_folder: "/home/cle/experiment_results"  # Folder to save plots and summary

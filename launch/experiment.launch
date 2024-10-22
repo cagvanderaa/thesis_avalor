@@ -1,0 +1,19 @@
+<launch>
+    <!-- Include the multi-UAV MAVROS SITL launch file from offboard_py package -->
+    <include file="$(find offboard_py)/launch/multi_uav_mavros_sitl.launch"/>
+
+    <!-- Load experiment parameters from YAML file -->
+    <rosparam file="$(find offboard_py)/config/experiment_params.yaml" command="load" />
+
+    <!-- Target drone node -->
+    <node name="target_node" pkg="offboard_py" type="target.py" output="screen"/>
+
+    <!-- Pursuer drone node -->
+    <node name="pursuer_node" pkg="offboard_py" type="main.py" output="screen"/>
+
+    <!-- rqt_reconfigure node -->
+    <node name="rqt_reconfigure" pkg="rqt_reconfigure" type="rqt_reconfigure" output="screen"/>
+
+    <!-- Analysis node -->
+    <!-- <node name="error_logger_node" pkg="offboard_py" type="analysis.py" output="screen"/> -->
+</launch>

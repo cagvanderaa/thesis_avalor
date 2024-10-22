@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- Gazebo environment launch script -->
+    <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/hitl_iris.world"/>
+    <arg name="gui" default="true"/>
+    <arg name="debug" default="false"/>
+    <arg name="verbose" default="false"/>
+    <arg name="paused" default="false"/>
+
+    <!-- Launch Gazebo Simulation -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="world_name" value="$(arg world)"/>
+        <arg name="debug" value="$(arg debug)"/>
+        <arg name="verbose" value="$(arg verbose)"/>
+        <arg name="paused" value="$(arg paused)"/>
+    </include>
+
+    <!-- Spawn UAV0 -->
+    <group ns="uav0">
+        <arg name="vehicle" default="iris"/>
+        <include file="$(find px4)/launch/single_vehicle_spawn.launch">
+            <arg name="x" value="0"/>
+            <arg name="y" value="0"/>
+            <arg name="z" value="0"/>
+            <arg name="R" value="0"/>
+            <arg name="P" value="0"/>
+            <arg name="Y" value="0"/>
+            <arg name="vehicle" value="$(arg vehicle)"/>
+            <arg name="ID" value="0"/>
+        </include>
+    </group>
+
+    <!-- Spawn UAV1 -->
+    <!--group ns="uav1">
+        <arg name="vehicle" default="iris"/>
+        <include file="$(find px4)/launch/single_vehicle_spawn.launch">
+            <arg name="x" value="1"/>
+            <arg name="y" value="0"/>
+            <arg name="z" value="0"/>
+            <arg name="R" value="0"/>
+            <arg name="P" value="0"/>
+            <arg name="Y" value="0"/>
+            <arg name="vehicle" value="$(arg vehicle)"/>
+            <arg name="ID" value="1"/>
+        </include>
+    </group-->
+</launch>
