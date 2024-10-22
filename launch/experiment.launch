@@ -9,7 +9,7 @@
     <node name="target_node" pkg="offboard_py" type="target.py" output="screen"/>
 
     <!-- Pursuer drone node -->
-    <node name="pursuer_node" pkg="offboard_py" type="main.py" output="screen"/>
+    <!--node name="pursuer_node" pkg="offboard_py" type="main.py" output="screen"/ -->
 
     <!-- rqt_reconfigure node -->
     <node name="rqt_reconfigure" pkg="rqt_reconfigure" type="rqt_reconfigure" output="screen"/>

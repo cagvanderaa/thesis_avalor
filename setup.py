@@ -8,6 +8,6 @@ setup(
     package_data={
         'offboard_py': ['cfg/*.cfg'],  # You can add any additional files here if needed
     },
-    scripts=['scripts/target.py', 'scripts/velocity.py', 'scripts/analysis.py', 'scripts/main.py', 'scripts/tracker.py'],  # Executable scripts
+    scripts=['scripts/target.py', 'scripts/velocity.py', 'scripts/analysis.py', 'scripts/main.py', 'scripts/tracker.py', 'scripts/image_resizer.py'],  # Executable scripts
     install_requires=['rospy', 'dynamic_reconfigure'],
 )

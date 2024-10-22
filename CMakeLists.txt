@@ -56,7 +56,8 @@ catkin_install_python(PROGRAMS
   scripts/velocity.py
   scripts/analysis.py
   scripts/main.py
-  scripts/tracker.py  # Ensure this file exists or remove/comment if not needed
+  scripts/tracker.py
+  scripts/image_resizer.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

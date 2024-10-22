@@ -1,4 +1,3 @@
-  GNU nano 4.8                          video_stream.launch                                    
 <launch>
   <!-- Arguments -->
   <arg name="video_stream_url" default="rtsp://192.168.144.25:8554/main.264" />
